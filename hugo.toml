@@ -1,3 +1,20 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
 title = 'My New Hugo Site'
+theme = ["github.com/joshed-io/reveal-hugo"]
+
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[outputFormats.Reveal]
+baseName = "index"
+mediaType = "text/html"
+isHTML = true
+
+
+[params.reveal_hugo]
+theme = "dracula"
+history = true
+slide_number = true
+transition_speed = 'fast'

@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+<title>Maintaining A Legacy</title>
+
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="stylesheet" href="/reveal-js/dist/reset.css">
+<link rel="stylesheet" href="/reveal-js/dist/reveal.css"><link rel="stylesheet" href="/reveal-js/dist/theme/dracula.css" id="theme">
+<link rel="stylesheet" href="/highlight-js/default.min.css">
+  </head>
+  <body>
+    
+    <div class="reveal">
+      <div class="slides">
+  
+
+    <section><h1 id="preserving-a-legacy">Preserving A Legacy</h1>
+<p>How I migrated 9and10news.com from a WordPress monolith to a cloud-first
+experience platform.</p>
+<p><strong>By</strong>: Andrew M McCall</p>
+</section>
+
+  
+
+    <section><h1 id="goal">Goal</h1>
+<p>Migrate the existing 9and10news.com website from a monolithic WordPress
+architecture to cloud-first ArcXP &ldquo;Experience&rdquo; platform</p>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="purpose-of-migration">Purpose Of Migration</h1>
+<p>Achieve a modern newsroom workflow with cloud based content tools while
+leveraging AWS for experience delivery.</p>
+
+</section>
+
+
+<section data-shortcode-section>
+<h2 id="sub-goals">Sub Goals</h2>
+<ul>
+<li>Have one consistent data schema</li>
+<li>Utilize the benefits of modern caching practices
+<ul>
+<li>server/page</li>
+<li>database</li>
+<li>in-memory</li>
+</ul>
+</li>
+<li>Implement elastic search</li>
+<li>Improved structure</li>
+<li>Better user experience</li>
+<li>Grow into an &ldquo;ArcXP partner relationship&rdquo;</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h2 id="background">Background</h2>
+<ul>
+<li>Website base started in 1998</li>
+<li>Originally PHP then ASP.NET</li>
+<li>WordPress added alongside many existing integrations in late 2000&rsquo;s</li>
+<li>A minimum of 4 WordPress re-themes and vendor transfers</li>
+</ul>
+
+</section>
+<p>
+
+<section data-shortcode-section>
+<h3 id="integrations">Integrations</h3>
+<ul>
+<li>BTI School Closings System</li>
+<li>Weather Stations</li>
+<li>Vendor Weather Data</li>
+<li>Ski Report API</li>
+<li>AP Press</li>
+<li>Chamber Master</li>
+<li>Wildlife &amp; Game report API</li>
+<li>User Generated Content areas</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="what-is-an-experience-platform">What Is An Experience Platform</h3>
+<blockquote>
+<p>DXPs are an evolution of traditional web content management systems to better map to the entire digital customer lifecycle, from content creation to deployment to measurement and iteration.
+Source: <a href="https://www.optimizely.com/optimization-glossary/digital-experience-platform/" title="What is a digital experience platform">Optimizely.com</a></p></blockquote>
+
+</section></p>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="initial-assessment">Initial Assessment</h1>
+<p>From pre-contemplation to contemplation</p>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="weaknesses-of-existing-site">Weaknesses Of Existing Site</h3>
+<ul>
+<li>18,000 articles &amp; pages</li>
+<li>crawl bloat</li>
+<li>Pagination was taking 5-10 seconds</li>
+<li>Unoptimized search</li>
+<li>Inconsistent data schema resulted in many broken pages, custom pages,
+legacy php or ASP.NET pages requiring higher overhead</li>
+<li>Inconsistent structure tags, pages, posts, categories, random directory
+plugins</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<ul>
+<li>Video, Photos, Galleries, Podcasts behind vendor gardens with no direct
+access</li>
+<li>Tragedy of the commons</li>
+<li>Shared server space</li>
+<li>Poorly optimized queries and page loading resulting in excess use of
+bandwidth</li>
+<li>Lack Of Security Updates</li>
+<li>Lack Of Code Maintenanace</li>
+<li>Poor Dependency Management, Tightly coupled code</li>
+<li>Inconsistent Code Styles due to many developers</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="strengths-of-existing-site">Strengths Of Existing Site</h3>
+<ul>
+<li>Monolithic architecture with the familiarity and commoditization of
+WordPress</li>
+<li>Plugins offer &ldquo;cheap and easy&rdquo; approach</li>
+<li>Many content editors familiar with WordPress workflow</li>
+<li>A pool of many developers who work on WordPress</li>
+<li>Retheming is cheap and and easy</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="weaknesses-of-arcxp">Weaknesses Of ArcXP</h3>
+<ul>
+<li>Relatively new product, still in active development, very much a beta</li>
+<li>Lack of documentation</li>
+<li>No plugin ecosystem</li>
+<li>Poor theming environment</li>
+<li>Editors unfamiliar with workflows</li>
+<li>Only a provider, never a consumer</li>
+<li>Absolutely Zero Migration support</li>
+<li>AWS costs</li>
+<li>Inconsistent APIs</li>
+<li>Despite being NOSQL DB, strict schemas</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="strengths-of-arcxp">Strengths Of ArcXP</h3>
+<ul>
+<li>Owned by WaPo / Amazon with all in one service/cost structure for AWS
+<ul>
+<li>MediaLive - streaming delivery</li>
+<li>Elastic Transcoder - m3u8 to hls encoding on the fly</li>
+<li>Elemental Live - live encoding</li>
+<li>Elasticache</li>
+<li>Lamba serverless functions</li>
+</ul>
+</li>
+<li>Heavily Focused On Newsrooms</li>
+<li>Integrations With Chartbeat, Elastic Search</li>
+<li>Although unfinished, an impressively large api suite</li>
+</ul>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h2 id="cleaning-and-organizing-data">Cleaning and Organizing Data</h2>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="choosing-a-tech-stack-and-why-we-chose-the-wrong-one">Choosing A Tech Stack (and why we chose the wrong one)</h3>
+<ul>
+<li>2 frontend and myself as migration</li>
+<li>Tech lead advocated for Node.js due to commonality of working with
+Javascript amongst all three of us</li>
+<li>One developer dropped out</li>
+<li>The lead developer was less familiar with backend development</li>
+<li>Other languages such as (Go, python) would have been better suited for
+this</li>
+</ul>
+
+</section>
+<p>
+
+<section data-shortcode-section>
+<h3 id="preparation-for-the-move">Preparation For The Move</h3>
+<ul>
+<li>Writing a tool to combine Google Analytics with TownNews Proprietary
+Analytics system
+<ul>
+<li>Node.js, cheerio, jsdom</li>
+<li>Google UA API</li>
+<li>TN Web Scraping via query params</li>
+<li>Building a CLI to aggregate UA with server analytics of TN</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<ul>
+<li>Total of ~ 10,000 posts/pages to migrate</li>
+<li>Building a mariadb database of pages with at least 100 views a year
+<ul>
+<li>id</li>
+<li>slug</li>
+<li>title</li>
+<li>wordpress slug (to get data from api)</li>
+<li>version (in case we had any race condition issues)</li>
+</ul>
+</li>
+</ul>
+
+</section></p>
+
+
+<section data-shortcode-section>
+<h3 id="meeting-with-departments">Meeting With Departments</h3>
+<ul>
+<li>Meeting with department leads and key personnel</li>
+<li>Conducted interviews
+<ul>
+<li>Important Sections</li>
+<li>General Workflow</li>
+<li>Key pages</li>
+<li>Identified sponsorships</li>
+<li>Determing pain points and opportunities</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="choosing-some-additional-vendors">Choosing Some Additional Vendors</h3>
+<ul>
+<li>Freestar for programmatic ads</li>
+<li>chartbeat for real time analytics in combination with Google Analytics
+(trending and latest stories feed)</li>
+<li>Connatix &amp; Minute.ly for VOD ads</li>
+<li>Mailchimp and wufoo for newsletters and contact forms</li>
+<li>dappier.ai for RAG marketplace revenue share</li>
+</ul>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h2 id="phase-1-exploring-data">Phase 1: Exploring Data</h2>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="overview-of-townnews-data">Overview Of TownNews Data</h3>
+<ul>
+<li>Articles mostly followed conventional WP Data structures</li>
+<li>Videos all hosted in <strong>Field59</strong> Cloud Video Service Microservice</li>
+<li>Galleries &amp;&amp; Images hosted in proprietary microservice</li>
+<li>Authors are WP Users with some custom meta fields</li>
+<li>A mixture of categories tags with nested taxonomies for site structure</li>
+<li><a href="https://www.help.bloxdigital.com/field59/api/" title="Existing Vendor API">TN / Blox/ Field59 API Docs</a></li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="townnews-challenges">TownNews Challenges</h3>
+<ul>
+<li>Contract made us a renter of our data</li>
+<li>Unwilling to give us access to server or plugins to export database</li>
+<li>Unwilling to give us api keys for micro services</li>
+<li>Heavy rate limiting</li>
+<li>WP API was available, but heavily relied on referential relationships</li>
+</ul>
+
+</section>
+<p>
+
+<section data-shortcode-section>
+<h3 id="what-i-did">What I Did</h3>
+<ul>
+<li>WP API Endpoints were available and for posts gave a mostly detailed
+representation of the data</li>
+<li>Created Middleware to add <code>X-Forwarded-For</code>, <code>X-REAL-IP</code>, alternating
+user agents, denormalized urls, parameter manipulation, parameter
+pollution(multiple of the same query param), randomized protocols</li>
+<li>Ended up with a combination of BurpSuite and mullvad vpn proxy</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<ul>
+<li>Utilized wayback machine to find old documentation to learn how to
+reverse engineer their video and gallery api keys
+<ul>
+<li>combination of hmac signature based on your account id and timestamp</li>
+<li>pass as part of basic authorization header</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="exploring-and-modeling-the-data">Exploring and modeling the data</h3>
+<ul>
+<li>Utilized the API documentation and POSTMAN to explore Data Structures</li>
+<li>Utilizing MVC architecture, We explored as much of the video, photo,
+and gallery apis as possible to determine patterns in the data
+structures</li>
+<li>Created a JSON Schema spec of the data structures of common data
+keys, noting how the relationships map to the WP posts, as well as
+noting anything that wasn&rsquo;t critical to the data (pingback,
+tn metadata)</li>
+</ul>
+
+</section></p>
+
+
+<section data-shortcode-section>
+<h3 id="legacy-web-data">Legacy Web Data</h3>
+<ul>
+<li>Of the elected articles, only ~ 200 were in a legacy format</li>
+<li>Due to being very low in overall views, we elected to continue serving
+them from our server</li>
+<li>My role was to crawl them with a web scraper and convert them to html
+documents that were consistent with our current branding.</li>
+<li>This was done using the Go Colly package</li>
+<li>Server was deprecated in 2025</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="analyzing-existing-external--vendor-integrations">Analyzing Existing External &amp; Vendor Integrations</h3>
+<ul>
+<li>3 Drop In Plugins</li>
+<li>BTI School Closing</li>
+<li>Ski Report API</li>
+<li>Elections Results</li>
+</ul>
+
+</section>
+</section>
+    <section><p>
+
+<section data-shortcode-section>
+<h2 id="part-2-exploring-the-unknown">Part 2: Exploring The Unknown</h2>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="arcxp-data-migration-challenges">ArcXP Data Migration Challenges</h3>
+<ul>
+<li>Lack of documentation</li>
+<li>Customer Enablement Team was used up quickly and elected to not retain</li>
+<li>Lack of resources on line</li>
+<li>Migrating from headless experience to &ldquo;block themes&rdquo;</li>
+<li>Inconsistent apis and data shapes</li>
+<li>Migration API only had unformatted examples of &ldquo;minimal viable examples&rdquo;</li>
+<li>Migration API errors were not verbose</li>
+</ul>
+
+</section></p>
+
+
+<section data-shortcode-section>
+<h3 id="what-i-did">What I Did</h3>
+<ul>
+<li>One Foot In Front Of The Other</li>
+<li>First thing I did was used the CMS
+<ul>
+<li>Created articles with the &ldquo;default&rdquo; theme</li>
+<li>Created assets such as videos, galleries,
+playlists,authors,tags,&ldquo;sites&rdquo;</li>
+<li>Utilized Browser Developer Tools and Burp Suite Proxy to read
+response payloads</li>
+<li>saved many sandbox articles and assets json payloads into json files
+for reference</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="migration-api">Migration API</h3>
+<ul>
+<li>A suite of API Endpoints that accept PUT, POST, DELETE Methods and JSON
+endpoints that consist of JSON ANS</li>
+<li><a href="https://github.com/washingtonpost/ans-schema/tree/master/src/main/resources/schema/ans/0.10.9" title="Arc Native Specification">ARC Native Specification</a></li>
+<li><strong>Goal</strong>: Rebuild Content in a format that satisfies ANS</li>
+</ul>
+
+</section>
+<p>
+
+<section data-shortcode-section>
+<h3 id="what-i-did-to-learn-migration-api">What I Did To Learn Migration API</h3>
+<ul>
+<li>Hand Built Small ANS Payloads and used CURL/Postman To familiarize myself
+with the API</li>
+<li>Reached out To Cincinnati News and Click On Detroit who were current
+customers of ArcXP, met with developers to learn from their experience</li>
+<li>Continued to build test case objects to practice with in a sandbox
+environment.</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<ul>
+<li>Detailed when failures would occur, status codes, status messages,
+commonalities of data structures and relationships</li>
+<li>Familiarized Myself with the order / precedence in which data needs to be
+ingested for proper referencing (migration center breaks up payload to
+different ingestion services)</li>
+<li>Familiarized myself with adding any custom data keys</li>
+</ul>
+
+</section></p>
+
+
+<section data-shortcode-section>
+<h3 id="handling-video">Handling Video</h3>
+<ul>
+<li>Migration Center had strict guidelines for video ingestion
+<ul>
+<li>H.264/30 fps</li>
+<li>No more than 2GB</li>
+</ul>
+</li>
+<li>What I Did
+<ul>
+<li>Created db to house video meta data</li>
+<li>Called <code>field 59</code> API and build a database on filesizes and encoding</li>
+<li>Built a cli that calls FFMPEG to convert video and update
+a db table with corrected format - file_name, id, article_id,
+field59_id</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="handling-images">Handling Images</h3>
+<ul>
+<li>Migration API would only accept: <code>JPEG</code>, <code>PNG</code>, <code>BMP</code>,<code>TIFF</code></li>
+<li>Problem: existing website used many image formats such as <code>TIFF</code>, <code>SVG</code>,
+<code>WEBP</code></li>
+<li>Solution: similar to above, accept using imagemagick to convert the
+image, store the changes in a db, and handle that in migration</li>
+</ul>
+
+</section>
+</section>
+
+</div>
+      
+
+    </div>
+<script type="text/javascript" src=/reveal-hugo/object-assign.js></script>
+
+
+<script src="/reveal-js/dist/reveal.js"></script>
+
+
+  <script type="text/javascript" src="/reveal-js/plugin/markdown/markdown.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/highlight/highlight.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/zoom/zoom.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/notes/notes.js"></script>
+  
+<script type="text/javascript">
+  
+  
+  function camelize(map) {
+    if (map) {
+      Object.keys(map).forEach(function(k) {
+        newK = k.replace(/(\_\w)/g, function(m) { return m[1].toUpperCase() });
+        if (newK != k) {
+          map[newK] = map[k];
+          delete map[k];
+        }
+      });
+    }
+    return map;
+  }
+
+  var revealHugoDefaults = { center: true, controls: true, history: true, progress: true, transition: "slide" };
+  var revealHugoSiteParams = {"history":true,"slide_number":true,"theme":"dracula","transition_speed":"fast"};
+  var revealHugoPageParams = {};
+
+  var revealHugoPlugins = {
+    
+    plugins: [RevealMarkdown,RevealHighlight,RevealZoom,RevealNotes]
+  };
+
+  
+  var options = Object.assign({},
+    camelize(revealHugoDefaults),
+    camelize(revealHugoSiteParams),
+    camelize(revealHugoPageParams),
+    camelize(revealHugoPlugins));
+
+  Reveal.initialize(options);
+</script>
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+
+
+
+    
+    
+  </body>
+</html>
