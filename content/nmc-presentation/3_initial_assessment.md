@@ -17,27 +17,13 @@ From pre-contemplation to contemplation
 {{% section %}}
 ### Weaknesses Of Existing Site
 - 18,000 articles & pages
-- crawl bloat
 - Pagination was taking 5-10 seconds
 - Unoptimized search
-- Inconsistent data schema resulted in many broken pages, custom pages,
-  legacy php or ASP.NET pages requiring higher overhead
-- Inconsistent structure tags, pages, posts, categories, random directory
-  plugins
+- Inconsistent data schema resulted in many broken experiences
+- Inconsistent structure of tags, categories, etc
+- Referential content behind walled API garden
+- No consistent security updates
   {{% /section %}}
-
-  {{% section %}}
-- Video, Photos, Galleries, Podcasts behind vendor gardens with no direct
-  access
-- Tragedy of the commons
-- Shared server space
-- Poorly optimized queries and page loading resulting in excess use of
-bandwidth
-- Lack Of Security Updates
-- Lack Of Code Maintenanace
-- Poor Dependency Management, Tightly coupled code
-- Inconsistent code styles due to many developers
-{{% /section %}}
 
 {{% section %}}
 
@@ -51,18 +37,13 @@ bandwidth
 - Absolutely Zero Migration support
 - AWS costs
 - Inconsistent APIs
-- Despite being NOSQL DB, strict schemas
+- Inconsistent Schema Availability
 
 {{% /section %}}
 
 {{% section %}}
  ### Strengths Of ArcXP
- - Owned by WaPo / Amazon with all in one service/cost structure for AWS
-    - MediaLive - streaming delivery
-    - Elastic Transcoder - m3u8 to hls encoding on the fly
-    - Elemental Live - live encoding 
-    - Elasticache
-    - Lamba serverless functions
+- Owned by WaPo / Amazon with all in one service/cost structure for AWS
 - Heavily Focused On Newsrooms
 - Integrations With Chartbeat, Elastic Search
 - Although unfinished, an impressively large api suite

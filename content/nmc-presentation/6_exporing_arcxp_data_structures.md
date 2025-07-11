@@ -21,7 +21,6 @@ transition_type: "concave"
 
 {{% section %}}
 ### What I Did
-- One Foot In Front Of The Other
 - First thing I did was used the CMS
     - Created articles with the "default" theme
     - Created assets such as videos, galleries,

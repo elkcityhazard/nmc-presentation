@@ -15,8 +15,6 @@ transition_type: "concave"
 - 2 frontend and myself as migration
 - Tech lead advocated for Node.js due to commonality of working with
   Javascript amongst all three of us
-- The lead developer was less familiar with backend development
-  this
 {{% /section %}}
 
 
