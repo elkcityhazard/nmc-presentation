@@ -33,7 +33,6 @@ From pre-contemplation to contemplation
 - No plugin ecosystem
 - Poor theming environment
 - Editors unfamiliar with workflows
-- Only a provider, never a consumer
 - Absolutely Zero Migration support
 - AWS costs
 - Inconsistent APIs
