@@ -741,9 +741,7 @@ module.exports = BulkANSObj
 <li>rechecking db</li>
 <li>tightly coupled code</li>
 </ul>
-<pre tabindex="0"><code>SELECT p.article_id, p.is_processed 
-FROM processed AS p WHERE id = ?
-</code></pre>
+
 </section>
 
 
@@ -773,14 +771,11 @@ smaller data sets</li>
 <section data-shortcode-section>
 <h3 id="how-it-worked">How It Worked</h3>
 <ul>
-<li>Command line flags
-<ul>
+<li>Command line flags</li>
 <li>operate on subset of data</li>
 <li>easier to mock data for testing</li>
 <li>different subroutines for different data structures</li>
 <li>faster i/o operations to track progress, failures, successes</li>
-</ul>
-</li>
 </ul>
 
 </section>
@@ -795,8 +790,6 @@ smaller data sets</li>
 
 
 <section data-shortcode-section>
-
-</section></p>
 <ul>
 <li>Parse the flags</li>
 <li>switch on each flag</li>
@@ -804,7 +797,10 @@ smaller data sets</li>
 <li>process old site into new site</li>
 <li>store results in database</li>
 <li>log errors to error log</li>
-<li>extend and increment as needed
+<li>extend and increment as needed</li>
+</ul>
+
+</section>
 
 
 <section data-shortcode-section>
@@ -819,7 +815,15 @@ smaller data sets</li>
 <li>Individual Concerns</li>
 </ul>
 
-</section></li>
+</section></p>
+</section><section>
+<h3 id="rss-feed">RSS Feed</h3>
+<ul>
+<li><a href="https://github.com/amledigital/OBF-Starter" title="910
+Media Group RSS Feed Generator">Our RSS Feed Generator</a></li>
+<li>creating a producer for our web view app</li>
+<li>mapping arcxp json to rss for consumption to app, google news, apple
+news, etc</li>
 </ul>
 </section>
     <section>
@@ -931,6 +935,54 @@ services</li>
 
 </section>
 </section>
+    <section>
+
+<section data-shortcode-section>
+<h3 id="reflections">Reflections</h3>
+
+</section>
+
+
+<section data-shortcode-section>
+<ul>
+<li>Scope Of Project Was Much Bigger Than I Anticipated</li>
+<li>90% of the project was thinking and planning, researching</li>
+<li>10% coding</li>
+<li>Crawler approach was very error prone</li>
+<li>CLI gave me fine-grained control as well as faster results for stake
+holders</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="outcomes">Outcomes</h3>
+<ul>
+<li>There were ~ 2 Dozen instances where I lost historical data</li>
+<li>Improved query times</li>
+<li>Improved User Experience</li>
+<li>Better separation of concerns</li>
+<li>Better data integrity</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="footnotes">Footnotes</h3>
+<ul>
+<li><a href="https://www.help.bloxdigital.com/field59/api/" title="API for
+videos from existing site">Field59 API</a></li>
+<li><a href="https://github.com/washingtonpost/ans-schema/tree/master/src/main/resources/schema/ans/0.10.9" title="Arc Native Specification">Arc Native Specification</a></li>
+<li><a href="https://github.com/amledigital/arc-circulation-frontend/tree/main/src/components/home" title="Recirculation tool">Partial Frontend For Recirculator</a></li>
+<li><a href="https://github.com/amledigital/arcxp-circulations/tree/develop" title="Partial Recirculation backend
+tool">Partial Backend For Recirculation Tools</a></li>
+<li><a href="https://dev.arcxp.com/api/public-content-retrieval/content-api/">Example ArcXP API</a></li>
+</ul>
+
+</section>
+</section>
 
 </div>
       
@@ -988,6 +1040,9 @@ services</li>
 
 
 
+
+  
+  
 
   
   

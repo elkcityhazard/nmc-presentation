@@ -62,11 +62,6 @@ transition_type: "concave"
 - restarting often
 - rechecking db
 - tightly coupled code
-```
-SELECT p.article_id, p.is_processed 
-FROM processed AS p WHERE id = ?
-
-```
 {{% /section %}}
 
 
@@ -93,10 +88,10 @@ Creating A CLI with command flags
 {{% section %}}
 ### How It Worked
 - Command line flags
-    - operate on subset of data
-    - easier to mock data for testing
-    - different subroutines for different data structures
-    - faster i/o operations to track progress, failures, successes
+- operate on subset of data
+- easier to mock data for testing
+- different subroutines for different data structures
+- faster i/o operations to track progress, failures, successes
 {{% /section %}}
 {{% section %}}
      `migrate -DSN="" -section="/news/local" -subprogram="some_subprog"
@@ -104,7 +99,6 @@ Creating A CLI with command flags
 
 {{% /section %}}
 {{% section %}}
-{{% /section %}}
 - Parse the flags
 - switch on each flag
 - start sub programs
@@ -112,7 +106,8 @@ Creating A CLI with command flags
 - store results in database
 - log errors to error log
 - extend and increment as needed
-{{%section %}}
+{{% /section %}}
+{{% section %}}
 ### Benefits to CLI
 - could write new sub programs as needed
 - fine-grained control
@@ -122,3 +117,19 @@ Creating A CLI with command flags
 - less spaghetti code
 - Individual Concerns
 {{% /section %}}
+ 
+
+ ---
+### RSS Feed
+
+ - [Our RSS Feed Generator](https://github.com/amledigital/OBF-Starter "910
+   Media Group RSS Feed Generator")
+ - creating a producer for our web view app
+ - mapping arcxp json to rss for consumption to app, google news, apple
+   news, etc
+
+
+
+
+
+
