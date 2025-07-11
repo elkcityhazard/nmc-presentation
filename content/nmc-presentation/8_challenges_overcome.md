@@ -1,13 +1,13 @@
 
 ---
-title: Challenges Overcome
+title: Challenges To  Overcome
 weight: 9
 outputs: ["Reveal"]
 transition_type: "concave"
 ---
 
 {{% section %}}
-### Challenges Overcomes
+### Challenges To Overcome
 Some challenges we encountered migrating data
 {{% /section %}}
 
