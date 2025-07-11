@@ -47,14 +47,16 @@ transition_type: "concave"
 {{% section %}}
 ### Exploring and modeling the data
 - Utilized the API documentation and POSTMAN to explore Data Structures
-- Utilizing MVC architecture, We explored as much of the video, photo,
+- We explored as much of the video, photo,
   and gallery apis as possible to determine patterns in the data
   structures
 - Created a JSON Schema spec of the data structures of common data
   keys, noting how the relationships map to the WP posts, as well as
   noting anything that wasn't critical to the data (pingback,
   tn metadata)
+- mapping out cat/tags to site sections, storing in database
 {{% /section %}}
+
 
 {{% section %}}
 ### Legacy Web Data

@@ -343,13 +343,14 @@ reverse engineer their video and gallery api keys
 <h3 id="exploring-and-modeling-the-data">Exploring and modeling the data</h3>
 <ul>
 <li>Utilized the API documentation and POSTMAN to explore Data Structures</li>
-<li>Utilizing MVC architecture, We explored as much of the video, photo,
+<li>We explored as much of the video, photo,
 and gallery apis as possible to determine patterns in the data
 structures</li>
 <li>Created a JSON Schema spec of the data structures of common data
 keys, noting how the relationships map to the WP posts, as well as
 noting anything that wasn&rsquo;t critical to the data (pingback,
 tn metadata)</li>
+<li>mapping out cat/tags to site sections, storing in database</li>
 </ul>
 
 </section></p>
@@ -497,6 +498,424 @@ image, store the changes in a db, and handle that in migration</li>
 </ul>
 
 </section>
+
+
+<section data-shortcode-section>
+<h3 id="sites-api">Sites API</h3>
+<ul>
+<li>Website sections</li>
+<li>Alternative site sections</li>
+<li>Section metadata</li>
+<li>Social</li>
+<li>Custom Meta keys</li>
+<li>Global Content items such as lead art, logos, etc</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="hierarchical-api">Hierarchical API</h3>
+<ul>
+<li>Site Navigation</li>
+<li>Section Aliases</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="delivery-api">Delivery API</h3>
+<ul>
+<li>Handling Redirects</li>
+<li>Canonical URLs</li>
+<li>Vanity Urls</li>
+</ul>
+
+</section>
+<p>
+
+<section data-shortcode-section>
+<h3 id="order-matters">Order Matters</h3>
+<ul>
+<li>Authors</li>
+<li>Tags</li>
+<li>Categories</li>
+<li>Images</li>
+<li>Galleries</li>
+<li>Videos</li>
+<li>Stories</li>
+<li>&ldquo;Sites&rdquo; (also known as sections)</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="building-a-test-site">Building A Test Site</h3>
+<ul>
+<li>Building a test site to consume content</li>
+<li>Content Sources
+<ul>
+<li>ArcXP Data</li>
+<li>Vendor Data</li>
+<li>Self-hosted Data</li>
+</ul>
+</li>
+</ul>
+
+</section></p>
+
+
+<section data-shortcode-section>
+<h3 id="example-of-content-source">Example Of Content Source</h3>
+<pre tabindex="0"><code>import axios from &#34;axios&#34;;
+import { parseString } from &#39;xml2js&#39;;
+
+const fetch = () =&gt; {
+  // get time rounded down to the last 5 minute interval for cache busting
+  const coeff = 1000 * 60 * 5;
+  const date = new Date();  //or use any other date
+  const rounded = new Date(Math.round(date.getTime() / coeff) * coeff);
+  const timeParam = String(rounded.getHours()).padStart(2,&#39;0&#39;)+String(rounded.getMinutes()).padStart(2,&#39;0&#39;);
+  return axios.get(`https://spicymagic.9and10news.com/bti-closings/closings.xml?time=${timeParam}`)
+    .then((response)=&gt;{
+      let parsedJson;
+      // Check for closed Root tag before parsing
+      const rootRegex = /&lt;\/File&gt;/ig;
+      const rootCheck = response.data.match(rootRegex);
+      if(!rootCheck){
+        // fix broken root
+        response.data+=&#39;&lt;/File&gt;&#39;;
+      }
+
+      parseString(response.data, {trim: true, normalizeTags: true, normalize: true, explicitArray: false}, (err, result) =&gt; {
+        parsedJson = result;
+      });
+
+      // move lastUpdated to root
+      let lastUpdated = parsedJson.file.$.Time;
+      delete parsedJson.file.$;
+      parsedJson.file.lastUpdated = lastUpdated;
+
+      // check if closing is singular move to array
+      if(parsedJson.file.closing &amp;&amp; ! Array.isArray(parsedJson.file.closing)){
+        const singleClosing = parsedJson.file.closing;
+        delete parsedJson.file.closing;
+        parsedJson.file.closing = [singleClosing];
+      }
+
+      return parsedJson.file;
+    })
+    .catch(function (error) {
+      const cause = new Error(error.message);
+      const errorMsg = new Error(&#39;School Closings Get Error&#39;, {cause});
+      errorMsg.statusCode = 404;
+      errorMsg.cause = {
+        message:error.message,
+        status: error.status
+      };
+			throw errorMsg;
+    });
+};
+
+export default {
+  fetch,
+  schemaName: &#34;910-weather&#34;,
+  ttl: 300,
+  cache: true,
+  serveStaleCache: true
+};
+</code></pre>
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="a-minimal-viable-ans-document">A Minimal Viable ANS Document</h3>
+<pre tabindex="0"><code>class BulkANSObj {
+    constructor(
+                sourceId = new Date(Date.now()).toString(),
+                sourceType = &#34;story&#34;,
+                priority = &#34;historical&#34;,
+                website = &#34;910news&#34;,
+                groupId =&#34;&#34;,
+                ANS = {},
+                circulations = [],
+                references = [],
+                arcAdditionalProperties = {}
+    ) {
+        this.sourceId = sourceId
+        this.sourceType = sourceType
+        this.priority = priority
+        this.website = website
+        this.groupId = groupId
+        this.ANS = ANS
+        this.circulations = circulations
+        this.references = references
+        this.arcAdditionalProperties = arcAdditionalProperties
+
+    }
+}
+
+
+
+module.exports = BulkANSObj
+</code></pre>
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h2 id="part-3-building-v1-migration-tool">Part 3: Building V1 Migration Tool</h2>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="strategy">Strategy</h3>
+<ul>
+<li>crawl existing website page by page via wp api</li>
+<li>lookup in db</li>
+<li>parse the document
+<ul>
+<li>authors</li>
+<li>images/galleries</li>
+<li>videos</li>
+<li>categories/tags</li>
+<li>html content</li>
+<li>embedded content</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="tools">Tools</h3>
+<ul>
+<li>crypto package for base32 encoded arcxp ids</li>
+<li>cherrio / jsdom for parsing html</li>
+<li>connect-timeout to handle timeouts and retries</li>
+<li>dotenv to manage environment variables</li>
+<li>node-fetch/promise-request to handle fetching data</li>
+<li>slugify</li>
+<li>xml2js to handle xml to js parsing for json</li>
+<li>yargs for command line args</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="prep">Prep</h3>
+<ul>
+<li>creating up and down migrations</li>
+<li>db servicer</li>
+<li>creating javascript models/interfaces</li>
+<li>creating functions to perform transformations</li>
+<li>additional parser helpers and utilty functions</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="mistakes-were-made">Mistakes were made</h3>
+<ul>
+<li>extremely error prone</li>
+<li>data was extremely messy / difficult to handle edge cases</li>
+<li>lots of failures and logging to log files</li>
+<li>time spent checking is_processed in db</li>
+<li>memory limitations on local machine</li>
+<li>less discretionary input from myself</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="bottlenecks">Bottlenecks</h3>
+<ul>
+<li>restarting often</li>
+<li>rechecking db</li>
+<li>tightly coupled code</li>
+</ul>
+<pre tabindex="0"><code>SELECT p.article_id, p.is_processed 
+FROM processed AS p WHERE id = ?
+</code></pre>
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="migration-tool-v2">Migration Tool V2</h3>
+<p>Creating A CLI with command flags</p>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="why-it-was-better">Why It Was Better</h3>
+<ul>
+<li>More control over how the data was processed</li>
+<li>using different sub programs for different eras of the site</li>
+<li>being able to target specific content types on the existing site
+(gallery,photo)</li>
+<li>Although slightly more work, better outcomes due to higher control,
+smaller data sets</li>
+<li>Better memory control</li>
+<li>Easier Testing</li>
+</ul>
+
+</section>
+<p>
+
+<section data-shortcode-section>
+<h3 id="how-it-worked">How It Worked</h3>
+<ul>
+<li>Command line flags
+<ul>
+<li>operate on subset of data</li>
+<li>easier to mock data for testing</li>
+<li>different subroutines for different data structures</li>
+<li>faster i/o operations to track progress, failures, successes</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<pre><code> `migrate -DSN=&quot;&quot; -section=&quot;/news/local&quot; -subprogram=&quot;some_subprog&quot;
+</code></pre>
+<p>-type=&ldquo;photos&rdquo; &ndash;dry-run=false -verbose=true`</p>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="benefits-to-cli">Benefits to CLI</h3>
+<ul>
+<li>could write new sub programs as needed</li>
+<li>fine-grained control</li>
+<li>showing stakeholders progress more quickly</li>
+<li>easier mocking for unit and integration tests</li>
+<li>higher degree of portability</li>
+<li>less spaghetti code</li>
+<li>Individual Concerns</li>
+</ul>
+
+</section></p>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h3 id="challenges-overcomes">Challenges Overcomes</h3>
+<p>Some challenges we encountered migrating data</p>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="lack-of-concurrency">Lack Of Concurrency</h3>
+<ul>
+<li>Many issues would have been solved via concurrency</li>
+<li>challenges ocurred from bottlenecks in network io</li>
+<li>Order of content ingestion mattered, passing to a routine handler would
+have helped via for select pattern</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="memory-management">Memory Management</h3>
+<ul>
+<li>I ran into many cases where asset processing routinely exhausted heap</li>
+<li>Solution in these cases was to convert many file io operations (temp
+files,etc) to use buffers and manage io streams which helped</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="rate-limiting">Rate Limiting</h3>
+<ul>
+<li>This was by far the biggest pain</li>
+<li>Tried many header manipulation hacks</li>
+<li>Ended up on a combination of burpsuite and mullvad vpn cli as part of
+shell script to rotate ip</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="media-types--file-sizes">Media Types / File Sizes</h3>
+<ul>
+<li>Had to build separate subprograms to convert media</li>
+<li>Store in separate database to act as a reference update</li>
+<li>This added to memory overhead</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="inconsistent-data-format--unclean">Inconsistent Data Format / Unclean</h3>
+<ul>
+<li>This was the primary motivation for developing V2 CLI Tool</li>
+<li>Data was so inconsistent through epochs that it required many sub
+programs to process data into ANS</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="scope-creep">Scope creep</h3>
+<ul>
+<li>Leadership identified many items that weren&rsquo;t of value from a data
+standpoint but were of sentimental value</li>
+<li>Consistent prioitization and communication helped solve many of these
+issues</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="staff-resource-limitation">Staff Resource Limitation</h3>
+<ul>
+<li>Developer left early in project requiring to rebalance</li>
+<li>Gave less time to migration as I needed to jump into development</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="storing-ugc-data">Storing UGC Data</h3>
+<ul>
+<li>Arc custom fields are very limited and don&rsquo;t work across all APIs</li>
+<li>User generated content from the previous site needed to be hosted in it&rsquo;s
+own microservice</li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h3 id="vendor-and-3p-data-integrations">Vendor and 3P Data Integrations</h3>
+<ul>
+<li>Lots of integrations written haphazardly in WP Theme and drop in plugins</li>
+<li>Resources needed to be allocated to build content sources and any API
+services</li>
+</ul>
+
+</section>
 </section>
 
 </div>
@@ -555,6 +974,12 @@ image, store the changes in a db, and handle that in migration</li>
 
 
 
+
+  
+  
+
+  
+  
 
   
   
