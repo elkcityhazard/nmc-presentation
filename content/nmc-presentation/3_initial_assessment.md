@@ -36,7 +36,7 @@ bandwidth
 - Lack Of Security Updates
 - Lack Of Code Maintenanace
 - Poor Dependency Management, Tightly coupled code
-- Inconsistent Code Styles due to many developers
+- Inconsistent code styles due to many developers
 {{% /section %}}
 
 {{% section %}}

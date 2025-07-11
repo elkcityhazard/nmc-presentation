@@ -14,7 +14,7 @@ isHTML = true
 
 
 [params.reveal_hugo]
-theme = "dracula"
+theme = "moon"
 history = true
 slide_number = true
 transition_speed = 'fast'

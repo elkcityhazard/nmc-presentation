@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="stylesheet" href="/reveal-js/dist/reset.css">
-<link rel="stylesheet" href="/reveal-js/dist/reveal.css"><link rel="stylesheet" href="/reveal-js/dist/theme/dracula.css" id="theme">
+<link rel="stylesheet" href="/reveal-js/dist/reveal.css"><link rel="stylesheet" href="/reveal-js/dist/theme/moon.css" id="theme">
 <link rel="stylesheet" href="/highlight-js/default.min.css">
   </head>
   <body>
@@ -21,6 +21,8 @@
 <p>How I migrated 9and10news.com from a WordPress monolith to a cloud-first
 experience platform.</p>
 <p><strong>By</strong>: Andrew M McCall</p>
+<p>This presentation made with <a href="https://gohugo.io" title="Hugo Static Site
+Generator">Hugo</a> &amp; <a href="https://revealjs.com" title="Reveal.js">Reveal.js</a></p>
 </section>
 
   
@@ -131,7 +133,7 @@ bandwidth</li>
 <li>Lack Of Security Updates</li>
 <li>Lack Of Code Maintenanace</li>
 <li>Poor Dependency Management, Tightly coupled code</li>
-<li>Inconsistent Code Styles due to many developers</li>
+<li>Inconsistent code styles due to many developers</li>
 </ul>
 
 </section>
@@ -306,6 +308,7 @@ Analytics system
 <li>Unwilling to give us api keys for micro services</li>
 <li>Heavy rate limiting</li>
 <li>WP API was available, but heavily relied on referential relationships</li>
+<li>Typecasting, default values</li>
 </ul>
 
 </section>
@@ -782,9 +785,8 @@ smaller data sets</li>
 
 
 <section data-shortcode-section>
-<pre><code> `migrate -DSN=&quot;&quot; -section=&quot;/news/local&quot; -subprogram=&quot;some_subprog&quot;
+<pre><code> `migrate -DSN=&quot;&quot; -section=&quot;/news/local&quot; -subprogram=&quot;some_subprog&quot; -type=&quot;photos&quot; --dry-run=false -verbose=true`
 </code></pre>
-<p>-type=&ldquo;photos&rdquo; &ndash;dry-run=false -verbose=true`</p>
 
 </section>
 
@@ -821,9 +823,11 @@ smaller data sets</li>
 <ul>
 <li><a href="https://github.com/amledigital/OBF-Starter" title="910
 Media Group RSS Feed Generator">Our RSS Feed Generator</a></li>
+<li><a href="https://github.com/amledigital/weather-map-rss" title="Weather Map RSS Feed">Link To A RSS Tool I built</a></li>
 <li>creating a producer for our web view app</li>
 <li>mapping arcxp json to rss for consumption to app, google news, apple
 news, etc</li>
+<li>feeding AI for embeddings</li>
 </ul>
 </section>
     <section>
@@ -974,11 +978,23 @@ holders</li>
 <ul>
 <li><a href="https://www.help.bloxdigital.com/field59/api/" title="API for
 videos from existing site">Field59 API</a></li>
+<li><a href="https://github.com/amledigital/weather-map-rss" title="Weather Map RSS Feed">Link To A RSS Tool I built</a></li>
 <li><a href="https://github.com/washingtonpost/ans-schema/tree/master/src/main/resources/schema/ans/0.10.9" title="Arc Native Specification">Arc Native Specification</a></li>
 <li><a href="https://github.com/amledigital/arc-circulation-frontend/tree/main/src/components/home" title="Recirculation tool">Partial Frontend For Recirculator</a></li>
 <li><a href="https://github.com/amledigital/arcxp-circulations/tree/develop" title="Partial Recirculation backend
 tool">Partial Backend For Recirculation Tools</a></li>
 <li><a href="https://dev.arcxp.com/api/public-content-retrieval/content-api/">Example ArcXP API</a></li>
+</ul>
+
+</section>
+
+
+<section data-shortcode-section>
+<h1 id="thank-you">Thank You</h1>
+<blockquote>
+<p>Any fool can write code that a computer can understand. Good programmers write code that humans can understand.</p></blockquote>
+<ul>
+<li>Martin Fowler  - Code Refactoring</li>
 </ul>
 
 </section>
@@ -1019,7 +1035,7 @@ tool">Partial Backend For Recirculation Tools</a></li>
   }
 
   var revealHugoDefaults = { center: true, controls: true, history: true, progress: true, transition: "slide" };
-  var revealHugoSiteParams = {"history":true,"slide_number":true,"theme":"dracula","transition_speed":"fast"};
+  var revealHugoSiteParams = {"history":true,"slide_number":true,"theme":"moon","transition_speed":"fast"};
   var revealHugoPageParams = {};
 
   var revealHugoPlugins = {

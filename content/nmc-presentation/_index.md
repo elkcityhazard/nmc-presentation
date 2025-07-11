@@ -9,3 +9,6 @@ experience platform.
 
 __By__: Andrew M McCall
 
+This presentation made with [Hugo](https://gohugo.io "Hugo Static Site
+Generator") & [Reveal.js](https://revealjs.com "Reveal.js")
+

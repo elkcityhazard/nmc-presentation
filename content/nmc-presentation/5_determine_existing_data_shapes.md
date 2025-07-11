@@ -27,6 +27,7 @@ transition_type: "concave"
 - Unwilling to give us api keys for micro services
 - Heavy rate limiting
 - WP API was available, but heavily relied on referential relationships
+- Typecasting, default values
 {{% /section %}}
 
 {{% section %}}

@@ -34,9 +34,17 @@ transition_type: "concave"
 ### Footnotes
 - [Field59 API](https://www.help.bloxdigital.com/field59/api/ "API for
   videos from existing site")
+- [Link To A RSS Tool I built](https://github.com/amledigital/weather-map-rss "Weather Map RSS Feed")
 - [Arc Native Specification]( https://github.com/washingtonpost/ans-schema/tree/master/src/main/resources/schema/ans/0.10.9 "Arc Native Specification")
 - [Partial Frontend For Recirculator](https://github.com/amledigital/arc-circulation-frontend/tree/main/src/components/home "Recirculation tool")
 - [Partial Backend For Recirculation Tools](https://github.com/amledigital/arcxp-circulations/tree/develop "Partial Recirculation backend
   tool")
 - [Example ArcXP API](https://dev.arcxp.com/api/public-content-retrieval/content-api/)
+{{% /section %}}
+
+{{% section %}}
+# Thank You
+
+> Any fool can write code that a computer can understand. Good programmers write code that humans can understand.
+- Martin Fowler  - Code Refactoring
 {{% /section %}}

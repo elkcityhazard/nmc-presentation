@@ -94,8 +94,7 @@ Creating A CLI with command flags
 - faster i/o operations to track progress, failures, successes
 {{% /section %}}
 {{% section %}}
-     `migrate -DSN="" -section="/news/local" -subprogram="some_subprog"
--type="photos" --dry-run=false -verbose=true`
+     `migrate -DSN="" -section="/news/local" -subprogram="some_subprog" -type="photos" --dry-run=false -verbose=true`
 
 {{% /section %}}
 {{% section %}}
@@ -124,9 +123,11 @@ Creating A CLI with command flags
 
  - [Our RSS Feed Generator](https://github.com/amledigital/OBF-Starter "910
    Media Group RSS Feed Generator")
+ - [Link To A RSS Tool I built](https://github.com/amledigital/weather-map-rss "Weather Map RSS Feed")
  - creating a producer for our web view app
  - mapping arcxp json to rss for consumption to app, google news, apple
    news, etc
+ - feeding AI for embeddings
 
 
 
