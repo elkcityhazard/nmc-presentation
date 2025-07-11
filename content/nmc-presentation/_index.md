@@ -4,8 +4,7 @@ weight: 1
 outputs: ["Reveal"]
 ---
 # Preserving A Legacy
-How I migrated 9and10news.com from a WordPress monolith to a cloud-first
-experience platform. 
+A Migration Story
 
 __By__: Andrew M McCall
 

@@ -18,8 +18,7 @@
   
 
     <section><h1 id="preserving-a-legacy">Preserving A Legacy</h1>
-<p>How I migrated 9and10news.com from a WordPress monolith to a cloud-first
-experience platform.</p>
+<p>A Migration Story</p>
 <p><strong>By</strong>: Andrew M McCall</p>
 <p>This presentation made with <a href="https://gohugo.io" title="Hugo Static Site
 Generator">Hugo</a> &amp; <a href="https://revealjs.com" title="Reveal.js">Reveal.js</a></p>
@@ -140,20 +139,6 @@ bandwidth</li>
 
 
 <section data-shortcode-section>
-<h3 id="strengths-of-existing-site">Strengths Of Existing Site</h3>
-<ul>
-<li>Monolithic architecture with the familiarity and commoditization of
-WordPress</li>
-<li>Plugins offer &ldquo;cheap and easy&rdquo; approach</li>
-<li>Many content editors familiar with WordPress workflow</li>
-<li>A pool of many developers who work on WordPress</li>
-<li>Retheming is cheap and and easy</li>
-</ul>
-
-</section>
-
-
-<section data-shortcode-section>
 <h3 id="weaknesses-of-arcxp">Weaknesses Of ArcXP</h3>
 <ul>
 <li>Relatively new product, still in active development, very much a beta</li>
@@ -199,14 +184,12 @@ WordPress</li>
 
 
 <section data-shortcode-section>
-<h3 id="choosing-a-tech-stack-and-why-we-chose-the-wrong-one">Choosing A Tech Stack (and why we chose the wrong one)</h3>
+<h3 id="choosing-a-tech-stack-why-we-chose-javascript">Choosing A Tech Stack (Why we chose javascript)</h3>
 <ul>
 <li>2 frontend and myself as migration</li>
 <li>Tech lead advocated for Node.js due to commonality of working with
 Javascript amongst all three of us</li>
-<li>One developer dropped out</li>
-<li>The lead developer was less familiar with backend development</li>
-<li>Other languages such as (Go, python) would have been better suited for
+<li>The lead developer was less familiar with backend development
 this</li>
 </ul>
 
@@ -238,7 +221,7 @@ Analytics system
 <li>id</li>
 <li>slug</li>
 <li>title</li>
-<li>wordpress slug (to get data from api)</li>
+<li>wordpress_id</li>
 <li>version (in case we had any race condition issues)</li>
 </ul>
 </li>
@@ -251,29 +234,8 @@ Analytics system
 <h3 id="meeting-with-departments">Meeting With Departments</h3>
 <ul>
 <li>Meeting with department leads and key personnel</li>
-<li>Conducted interviews
-<ul>
-<li>Important Sections</li>
-<li>General Workflow</li>
-<li>Key pages</li>
-<li>Identified sponsorships</li>
+<li>Conducted interviews</li>
 <li>Determing pain points and opportunities</li>
-</ul>
-</li>
-</ul>
-
-</section>
-
-
-<section data-shortcode-section>
-<h3 id="choosing-some-additional-vendors">Choosing Some Additional Vendors</h3>
-<ul>
-<li>Freestar for programmatic ads</li>
-<li>chartbeat for real time analytics in combination with Google Analytics
-(trending and latest stories feed)</li>
-<li>Connatix &amp; Minute.ly for VOD ads</li>
-<li>Mailchimp and wufoo for newsletters and contact forms</li>
-<li>dappier.ai for RAG marketplace revenue share</li>
 </ul>
 
 </section>
@@ -319,10 +281,7 @@ Analytics system
 <ul>
 <li>WP API Endpoints were available and for posts gave a mostly detailed
 representation of the data</li>
-<li>Created Middleware to add <code>X-Forwarded-For</code>, <code>X-REAL-IP</code>, alternating
-user agents, denormalized urls, parameter manipulation, parameter
-pollution(multiple of the same query param), randomized protocols</li>
-<li>Ended up with a combination of BurpSuite and mullvad vpn proxy</li>
+<li>A combination of BurpSuite and mullvad vpn proxy to bypass rate limit</li>
 </ul>
 
 </section>
@@ -346,14 +305,11 @@ reverse engineer their video and gallery api keys
 <h3 id="exploring-and-modeling-the-data">Exploring and modeling the data</h3>
 <ul>
 <li>Utilized the API documentation and POSTMAN to explore Data Structures</li>
-<li>We explored as much of the video, photo,
-and gallery apis as possible to determine patterns in the data
-structures</li>
 <li>Created a JSON Schema spec of the data structures of common data
 keys, noting how the relationships map to the WP posts, as well as
 noting anything that wasn&rsquo;t critical to the data (pingback,
 tn metadata)</li>
-<li>mapping out cat/tags to site sections, storing in database</li>
+<li>Mapping out cat/tags to site sections, storing in database</li>
 </ul>
 
 </section></p>
@@ -362,13 +318,8 @@ tn metadata)</li>
 <section data-shortcode-section>
 <h3 id="legacy-web-data">Legacy Web Data</h3>
 <ul>
-<li>Of the elected articles, only ~ 200 were in a legacy format</li>
-<li>Due to being very low in overall views, we elected to continue serving
-them from our server</li>
-<li>My role was to crawl them with a web scraper and convert them to html
-documents that were consistent with our current branding.</li>
-<li>This was done using the Go Colly package</li>
-<li>Server was deprecated in 2025</li>
+<li>Scraped and converted to static html and served from our own server</li>
+<li>Deprecated in 2025</li>
 </ul>
 
 </section>
@@ -765,20 +716,18 @@ module.exports = BulkANSObj
 <li>Although slightly more work, better outcomes due to higher control,
 smaller data sets</li>
 <li>Better memory control</li>
-<li>Easier Testing</li>
+<li>Easier Testing / Data Mocking</li>
 </ul>
 
 </section>
 <p>
 
 <section data-shortcode-section>
-<h3 id="how-it-worked">How It Worked</h3>
 <ul>
 <li>Command line flags</li>
-<li>operate on subset of data</li>
-<li>easier to mock data for testing</li>
-<li>different subroutines for different data structures</li>
-<li>faster i/o operations to track progress, failures, successes</li>
+<li>Operate on subset of data</li>
+<li>Different subroutines for different data structures</li>
+<li>Faster i/o operations to track progress, failures, successes</li>
 </ul>
 
 </section>
@@ -792,6 +741,7 @@ smaller data sets</li>
 
 
 <section data-shortcode-section>
+<h3 id="how-it-worked">How It Worked</h3>
 <ul>
 <li>Parse the flags</li>
 <li>switch on each flag</li>

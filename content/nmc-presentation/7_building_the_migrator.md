@@ -81,23 +81,22 @@ Creating A CLI with command flags
 - Although slightly more work, better outcomes due to higher control,
   smaller data sets
 - Better memory control
-- Easier Testing
+- Easier Testing / Data Mocking
 {{% /section %}}
 
 
 {{% section %}}
-### How It Worked
 - Command line flags
-- operate on subset of data
-- easier to mock data for testing
-- different subroutines for different data structures
-- faster i/o operations to track progress, failures, successes
+- Operate on subset of data
+- Different subroutines for different data structures
+- Faster i/o operations to track progress, failures, successes
 {{% /section %}}
 {{% section %}}
      `migrate -DSN="" -section="/news/local" -subprogram="some_subprog" -type="photos" --dry-run=false -verbose=true`
 
 {{% /section %}}
 {{% section %}}
+### How It Worked
 - Parse the flags
 - switch on each flag
 - start sub programs

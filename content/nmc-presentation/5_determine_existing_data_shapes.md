@@ -34,10 +34,7 @@ transition_type: "concave"
 ### What I Did
 - WP API Endpoints were available and for posts gave a mostly detailed
   representation of the data
--  Created Middleware to add `X-Forwarded-For`, `X-REAL-IP`, alternating
-   user agents, denormalized urls, parameter manipulation, parameter
-   pollution(multiple of the same query param), randomized protocols
-- Ended up with a combination of BurpSuite and mullvad vpn proxy
+-  A combination of BurpSuite and mullvad vpn proxy to bypass rate limit
 {{% /section %}}
 {{% section %}}
 - Utilized wayback machine to find old documentation to learn how to
@@ -48,26 +45,18 @@ transition_type: "concave"
 {{% section %}}
 ### Exploring and modeling the data
 - Utilized the API documentation and POSTMAN to explore Data Structures
-- We explored as much of the video, photo,
-  and gallery apis as possible to determine patterns in the data
-  structures
 - Created a JSON Schema spec of the data structures of common data
   keys, noting how the relationships map to the WP posts, as well as
   noting anything that wasn't critical to the data (pingback,
   tn metadata)
-- mapping out cat/tags to site sections, storing in database
+- Mapping out cat/tags to site sections, storing in database
 {{% /section %}}
 
 
 {{% section %}}
 ### Legacy Web Data
-- Of the elected articles, only ~ 200 were in a legacy format
-- Due to being very low in overall views, we elected to continue serving
-  them from our server
-- My role was to crawl them with a web scraper and convert them to html
-  documents that were consistent with our current branding. 
-- This was done using the Go Colly package
-- Server was deprecated in 2025
+- Scraped and converted to static html and served from our own server
+- Deprecated in 2025
 {{% /section %}}
 
 {{% section %}}

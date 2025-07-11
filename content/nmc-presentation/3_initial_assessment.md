@@ -41,18 +41,6 @@ bandwidth
 
 {{% section %}}
 
-### Strengths Of Existing Site
-- Monolithic architecture with the familiarity and commoditization of
-  WordPress
-- Plugins offer "cheap and easy" approach
-- Many content editors familiar with WordPress workflow
-- A pool of many developers who work on WordPress
-- Retheming is cheap and and easy
-
-{{% /section %}}
-
-{{% section %}}
-
 ### Weaknesses Of ArcXP
 - Relatively new product, still in active development, very much a beta
 - Lack of documentation
