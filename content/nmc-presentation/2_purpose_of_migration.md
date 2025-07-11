@@ -16,6 +16,12 @@ leveraging AWS for experience delivery.
 {{% /section %}}
 
 {{% section %}}
+### What Is An Experience Platform
+
+> DXPs are an evolution of traditional web content management systems to better map to the entire digital customer lifecycle, from content creation to deployment to measurement and iteration. 
+Source: [Optimizely.com](https://www.optimizely.com/optimization-glossary/digital-experience-platform/ "What is a digital experience platform")
+{{% /section %}}
+{{% section %}}
 ## Sub Goals
 - Have one consistent data schema
 - Utilize the benefits of modern caching practices
@@ -49,10 +55,4 @@ leveraging AWS for experience delivery.
 - Wildlife & Game report API  
 - User Generated Content areas
 
-{{% /section %}}
-{{% section %}}
-### What Is An Experience Platform
-
-> DXPs are an evolution of traditional web content management systems to better map to the entire digital customer lifecycle, from content creation to deployment to measurement and iteration. 
-Source: [Optimizely.com](https://www.optimizely.com/optimization-glossary/digital-experience-platform/ "What is a digital experience platform")
 {{% /section %}}
