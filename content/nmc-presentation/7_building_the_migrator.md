@@ -72,7 +72,7 @@ FROM processed AS p WHERE id = ?
 
 {{% section %}}
 
-### Migration Tool V2
+### Part Migration Tool V2
 Creating A CLI with command flags
 {{% /section %}}
 
@@ -103,6 +103,15 @@ Creating A CLI with command flags
 -type="photos" --dry-run=false -verbose=true`
 
 {{% /section %}}
+{{% section %}}
+{{% /section %}}
+- Parse the flags
+- switch on each flag
+- start sub programs
+- process old site into new site
+- store results in database
+- log errors to error log
+- extend and increment as needed
 {{%section %}}
 ### Benefits to CLI
 - could write new sub programs as needed
